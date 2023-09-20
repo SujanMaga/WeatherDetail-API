@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Discription</title>
+</head>
+<body>
+    <h1>Today's forcast</h1>
+
+    <input class="search" type="text" id="search" placeholder="Enter the name of a city">
+    <input type="submit" value="Search" id="button">
+
+    <!-- display City -->
+    <p>City :<span id="city"></span></p>
+
+
+    <!-- display temperature -->
+    <p>Temperature :<span id="temperature"></span></p>
+
+    <!-- display minimum temperature -->
+    <p>Minimum Temperature :<span id="min1"></span></p>
+    
+    <!-- display maximum temperature -->
+    <p>Maximum Temperature :<span id="max1"></span></p>
+
+    <!-- display wind speed -->
+    <p>Wind Speed:<span id="wind"></span></p>
+
+    <!-- display weather discription -->
+    <p>Weather :<span id="weatherValue"></span></p> 
+    <p>Weather Discription :<span id="weatherDiscription"></span>
+
+    <!-- display weather icon -->
+    <span id="icon"><img src=" "> </span>
+    </p>
+
+    <!-- display humidity -->
+    <p>Humidity :<span id="humidity"></span></p>
+
+    <!-- display pressure -->
+    <p>Pressure :<span id="pressure"></span></p>
+
+    <!-- display time -->
+    <p>Date and Time :<span id="time"></span></p>
+
+
+
+
+<script>
+    function weather(){
+    const change = document.getElementById("button");
+    change.addEventListener('click', function () {
+    var search = document.getElementById("search").value;
+    // Accessing openweathermap data via API key
+    fetch('http://localhost/ISA/my-api.php?city='+search)
+
+    // converting the data into JSON Format
+    .then((response) => response.json())
+
+
+    .then(data =>{
+        console.log(data);
+
+        var city = data['city'];
+
+
+        // storing the value from database to User-defined variable
+        var temperature = parseFloat(data['weather_temperature']);
+
+        // convert the value in K to C and formatting to two decimal numbers
+        var celcius = (temperature - 273.15).toFixed(2);
+
+
+        var min = parseFloat(data['min']);
+        // convert the value in K to C and formatting to two decimal numbers
+        var minimum = (min - 273.15).toFixed(2);
+
+        var max = parseFloat(data['max']);
+        // convert the value in K to C and formatting to two decimal numbers
+        var maximum = (max - 273.15).toFixed(2);
+
+        // storing the value from database to User-defined variable
+        var wind = data['weather_wind'];
+        var weatherVal= data['weather_value'];
+        var weatherDis= data['weather_description'];
+        var humidity= parseFloat(data['humidity']);
+        var pressure= parseFloat(data['pressure']);
+        var icon = data['icon'];
+        var time = data['weather_when'];
+        
+        // link to the icon of weather
+        var iconUrl="http://openweathermap.org/img/wn/" +icon+".png";
+
+        // using querySelector to get the element in document with the given ID
+        document.querySelector('#city').innerHTML = city;
+        document.querySelector('#temperature').innerHTML = celcius + " Celsius";
+        document.querySelector('#min1').innerHTML = minimum + " Celsius";
+        document.querySelector('#max1').innerHTML = maximum + " Celsius";
+        document.querySelector('#weatherValue').innerHTML=weatherVal;
+        document.querySelector('#weatherDiscription').innerHTML=weatherDis;
+        document.querySelector('#humidity').innerHTML=humidity+ " %";
+        document.querySelector('#pressure').innerHTML=pressure+ " hPa";
+        document.querySelector('#icon').innerHTML ="<img src='" +iconUrl+"'>" ;
+        document.querySelector('#wind').innerHTML=wind + " m/s";
+        document.querySelector('#time').innerHTML=time;
+
+
+    }
+    )
+})
+}
+
+weather();
+</script> 
+
+
+</body>
+</html>
